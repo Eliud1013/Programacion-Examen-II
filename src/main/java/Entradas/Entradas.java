@@ -3,13 +3,23 @@ package Entradas;
 public class Entradas {
     
     private String codigo;
+    private String nombre;
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
     private int cantidad;
     private int precio;
     private int venta;
     private int ganancia;
 
-    public Entradas(String codigo, int cantidad, int precio, int venta, int ganancia) {
+    public Entradas(String codigo, String nombre, int cantidad, int precio, int venta, int ganancia) {
         this.codigo = codigo;
+        this.nombre = nombre;
         this.cantidad = cantidad;
         this.precio = precio;
         this.venta = venta;
