@@ -6,22 +6,61 @@ import com.mycompany.examenprogramacion2.FrmPrincipal;
 import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class FrmEntradas extends javax.swing.JFrame {
 
-    public FrmEntradas() {
-        initComponents();
-        setLocationRelativeTo(null);
-        lblProducto.setVisible(false);
-        
-
-    }
     //Articulos
     ArrayList<Articulo> articuloStore = ControladorArticulo.getInstance().getArticuloStore();
 
     //Entradas
     ArrayList<Entradas> store = new ArrayList<>();
     ControladorEntradas cp = ControladorEntradas.getInstance();
+    //Tabla
+
+    DefaultTableModel model = new DefaultTableModel();
+
+    public FrmEntradas() {
+        initComponents();
+        setLocationRelativeTo(null);
+        //Tabla
+
+        model.addColumn("Nombre");
+        model.addColumn("Descripcion");
+        model.addColumn("Departamento");
+        model.addColumn("Categoria");
+        tablaDatos.setModel(model);
+
+    }
+
+    
+
+    private void setTableData(String departamentoFilt) {
+        String[] datos = new String[4];
+
+        for (int i = 0; i < articuloStore.size(); i++) {
+            if (articuloStore.get(i).getDepartamento().equals(departamentoFilt)) {
+                String Nombre = articuloStore.get(i).getNombre();
+                String descripcion = articuloStore.get(i).getDescripcion();
+                String departamento = articuloStore.get(i).getDepartamento();
+                String categoria = articuloStore.get(i).getCategoria();
+
+                datos[0] = Nombre;
+                datos[1] = descripcion;
+                datos[2] = departamento;
+                datos[3] = categoria;
+                model.addRow(datos);
+            }
+
+        }
+        for (int i = 0; i < tablaDatos.getColumnCount(); i++) {
+            Class<?> col_class = tablaDatos.getColumnClass(i);
+            tablaDatos.setDefaultEditor(col_class, null);
+                    
+            
+
+        }
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -64,15 +103,17 @@ public class FrmEntradas extends javax.swing.JFrame {
         txtField2Ganancia = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        comboBox2Departamento = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         lblProducto = new javax.swing.JLabel();
         lblNombreProducto = new javax.swing.JLabel();
         Salir1 = new javax.swing.JButton();
+        ScrollTabla = new javax.swing.JScrollPane();
+        tablaDatos = new javax.swing.JTable();
+        btn2Filtrar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -80,12 +121,14 @@ public class FrmEntradas extends javax.swing.JFrame {
 
         txtFieldCodigo.setForeground(new java.awt.Color(150, 150, 150));
         txtFieldCodigo.setText("Ingrese un codigo");
+        txtFieldCodigo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtFieldCodigoMouseClicked(evt);
+            }
+        });
         txtFieldCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtFieldCodigoKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtFieldCodigoKeyTyped(evt);
             }
         });
 
@@ -205,22 +248,6 @@ public class FrmEntradas extends javax.swing.JFrame {
                             .addComponent(jLabel12))
                         .addGap(5, 5, 5)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jLabel13)
-                        .addGap(66, 66, 66))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(118, 118, 118))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnRegistrar)
-                                .addGap(95, 95, 95))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(105, 105, 105))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -230,13 +257,13 @@ public class FrmEntradas extends javax.swing.JFrame {
                                         .addComponent(jLabel16)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addGap(0, 17, Short.MAX_VALUE)
+                                        .addGap(0, 21, Short.MAX_VALUE)
                                         .addComponent(txtFieldGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(53, 53, 53)))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel18)
-                                        .addGap(0, 17, Short.MAX_VALUE))
+                                        .addGap(0, 21, Short.MAX_VALUE))
                                     .addComponent(txtFieldPrecioTotal)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -252,7 +279,22 @@ public class FrmEntradas extends javax.swing.JFrame {
                                                 .addComponent(spinnerCantidad, javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addComponent(txtFieldCompra))))
                                     .addComponent(txtFieldVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(38, 38, 38))))
+                        .addGap(38, 38, 38))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addGap(66, 66, 66))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(118, 118, 118))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnRegistrar)
+                                .addGap(95, 95, 95))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(Salir, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(105, 105, 105))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -316,7 +358,12 @@ public class FrmEntradas extends javax.swing.JFrame {
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 27, -1, -1));
 
         txtField2Codigo.setForeground(new java.awt.Color(150, 150, 150));
-        txtField2Codigo.setText("Ingrese un Codigo");
+        txtField2Codigo.setText("Ingrese un Codigo...");
+        txtField2Codigo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                txtField2CodigoMouseClicked(evt);
+            }
+        });
         txtField2Codigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtField2CodigoActionPerformed(evt);
@@ -325,9 +372,6 @@ public class FrmEntradas extends javax.swing.JFrame {
         txtField2Codigo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtField2CodigoKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtField2CodigoKeyTyped(evt);
             }
         });
         jPanel2.add(txtField2Codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 236, -1));
@@ -342,6 +386,11 @@ public class FrmEntradas extends javax.swing.JFrame {
         txtField2PrecioCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtField2PrecioCompraActionPerformed(evt);
+            }
+        });
+        txtField2PrecioCompra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtField2PrecioCompraKeyReleased(evt);
             }
         });
         jPanel2.add(txtField2PrecioCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(401, 192, 176, -1));
@@ -362,6 +411,11 @@ public class FrmEntradas extends javax.swing.JFrame {
                 txtField2GananciaActionPerformed(evt);
             }
         });
+        txtField2Ganancia.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtField2GananciaKeyReleased(evt);
+            }
+        });
         jPanel2.add(txtField2Ganancia, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 350, 107, -1));
 
         jLabel6.setText("Utilidad o ganancia");
@@ -370,29 +424,24 @@ public class FrmEntradas extends javax.swing.JFrame {
         jLabel7.setText("Mostrar articulos por Departamento");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Abarrotes", "Lacteos", "Bebidas", "Frutas y Verduras", "Electronica", "Linea Blanca", "Escolares", "Limpieza", "Ingiene", "Belleza", "Bebes", "Damas", "Caballeros" }));
-        jPanel2.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 145, 236, -1));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        comboBox2Departamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Abarrotes", "Lacteos", "Bebidas", "Frutas y Verduras", "Electronica", "Linea Blanca", "Escolares", "Limpieza", "Ingiene", "Belleza", "Bebes", "Damas", "Caballeros" }));
+        comboBox2Departamento.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                comboBox2DepartamentoMouseClicked(evt);
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
-
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 235, 268, 371));
+        });
+        jPanel2.add(comboBox2Departamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 145, 236, -1));
 
         jLabel8.setText("Listado de articulos");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 205, -1, -1));
 
         jButton2.setText("Modificar");
         jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 403, 115, -1));
 
         jButton3.setText("Eliminar");
@@ -405,11 +454,14 @@ public class FrmEntradas extends javax.swing.JFrame {
         jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(425, 446, 115, -1));
 
         lblProducto.setFont(new java.awt.Font("Fira Code", 1, 18)); // NOI18N
+        lblProducto.setForeground(new java.awt.Color(150, 150, 150));
         lblProducto.setText("Producto");
         jPanel2.add(lblProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 0, 102, 28));
 
-        lblNombreProducto.setFont(new java.awt.Font("Fira Code SemiBold", 0, 18)); // NOI18N
-        jPanel2.add(lblNombreProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(295, 27, 135, 26));
+        lblNombreProducto.setFont(new java.awt.Font("Fira Code Medium", 0, 16)); // NOI18N
+        lblNombreProducto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNombreProducto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jPanel2.add(lblNombreProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 250, 26));
 
         Salir1.setFont(new java.awt.Font("Cantarell", 1, 18)); // NOI18N
         Salir1.setForeground(new java.awt.Color(204, 0, 51));
@@ -422,6 +474,32 @@ public class FrmEntradas extends javax.swing.JFrame {
             }
         });
         jPanel2.add(Salir1, new org.netbeans.lib.awtextra.AbsoluteConstraints(445, 499, 67, -1));
+
+        tablaDatos.setModel(model);
+        tablaDatos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosMouseClicked(evt);
+            }
+        });
+        ScrollTabla.setViewportView(tablaDatos);
+
+        jPanel2.add(ScrollTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 390, 390));
+
+        btn2Filtrar.setText("Filtrar");
+        btn2Filtrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn2FiltrarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn2Filtrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, -1, -1));
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 590, -1, -1));
 
         jTabbedPane1.addTab("Modificar", jPanel2);
 
@@ -455,7 +533,24 @@ public class FrmEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_txtField2GananciaActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        String codigo = txtField2Codigo.getText();
+        int index = 0;
+        for (int i = 0; i < store.size(); i++) {
+            if (store.get(i).getCodigo().equals(codigo)) {
+                index = i;
+                int opt = JOptionPane.showConfirmDialog(this, "Seguro que desea eliminar este elemento? ", "Alerta!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+                if (opt == JOptionPane.OK_OPTION) {
+
+                    store.remove(index);
+                    cp.setEntradasStore(store);
+
+                }
+            }
+
+        }
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtFieldDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFieldDepartamentoActionPerformed
@@ -476,6 +571,7 @@ public class FrmEntradas extends javax.swing.JFrame {
     int venta;
     int cantidad;
     int precioTotal;
+
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
 
         if (txtFieldCodigo.getText().equals("")) {
@@ -486,11 +582,9 @@ public class FrmEntradas extends javax.swing.JFrame {
 
             Entradas entrada = new Entradas(codigo, nombre, cantidad, precio, venta, ganancia);
 
-            //Recover controller data and set it to arraylist created in this class
-            store = cp.getEntradasStore();
-
             //Add entrada object into the arraylist created at the start
             store.add(entrada);
+
             cp.setEntradasStore(store);
 
             //Clear Fields
@@ -504,6 +598,7 @@ public class FrmEntradas extends javax.swing.JFrame {
             txtFieldVenta.setText("0");
             txtFieldGanancia.setText("0");
             JOptionPane.showMessageDialog(this, "Los datos han sido registrados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
+
         }
 
 
@@ -565,12 +660,12 @@ public class FrmEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_SalirActionPerformed
 
     private void txtFieldCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFieldCodigoKeyReleased
+
         String codigo = txtFieldCodigo.getText();
         String nombre = "";
         String desc = "";
         String departamento = "";
         String categoria = "";
-        
 
         for (int i = 0; i < articuloStore.size(); i++) {
 
@@ -579,7 +674,6 @@ public class FrmEntradas extends javax.swing.JFrame {
                 desc = articuloStore.get(i).getDescripcion();
                 departamento = articuloStore.get(i).getDepartamento();
                 categoria = articuloStore.get(i).getCategoria();
-                
 
             }
 
@@ -588,7 +682,7 @@ public class FrmEntradas extends javax.swing.JFrame {
         txtAreaDesc.setText(desc);
         txtFieldDepartamento.setText(departamento);
         txtFieldCategoria.setText(categoria);
-        
+
 
     }//GEN-LAST:event_txtFieldCodigoKeyReleased
 
@@ -601,8 +695,8 @@ public class FrmEntradas extends javax.swing.JFrame {
         String nombre = "";
         int ganancia = 0;
         boolean found = false;
-        for (int i = 0; i < store.size(); i++) {
 
+        for (int i = 0; i < store.size(); i++) {
             if (store.get(i).getCodigo().equals(codigo)) {
                 cantidad = store.get(i).getCantidad();
                 compra = store.get(i).getPrecio();
@@ -610,19 +704,29 @@ public class FrmEntradas extends javax.swing.JFrame {
                 nombre = store.get(i).getNombre();
                 ganancia = store.get(i).getGanancia();
                 found = true;
-            } else {
-                found = false;
             }
 
         }
         if (found == true) {
-            lblProducto.setVisible(true);
+
             lblNombreProducto.setText(nombre);
+            lblProducto.setForeground(Color.black);
             txtField2Cantidad.setValue(cantidad);
             txtField2PrecioCompra.setText(compra + "");
             txtFieldPrecioVenta.setText(venta + "");
             txtField2Ganancia.setText(ganancia + "");
+
+        } else {
+            txtField2Cantidad.setValue(0);
+            txtField2PrecioCompra.setText("");
+            txtFieldPrecioVenta.setText("");
+            lblNombreProducto.setText("");
+            txtField2Ganancia.setText("");
+            lblProducto.setForeground(Color.GRAY);
+
         }
+
+
     }//GEN-LAST:event_txtField2CodigoKeyReleased
 
     private void txtField2CodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtField2CodigoActionPerformed
@@ -641,25 +745,131 @@ public class FrmEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_Salir1ActionPerformed
     int accum0 = 0;
     int accum1 = 0;
-    private void txtField2CodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtField2CodigoKeyTyped
-        accum0++;
-        if(accum0 == 1){
-            txtField2Codigo.setText("");
-            txtField2Codigo.setForeground(Color.black);
-        }else{
-            //
-        }
-    }//GEN-LAST:event_txtField2CodigoKeyTyped
-
-    private void txtFieldCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFieldCodigoKeyTyped
+    private void txtFieldCodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFieldCodigoMouseClicked
         accum1++;
-        if(accum1 == 1){
+        if (accum1 == 1) {
             txtFieldCodigo.setText("");
             txtFieldCodigo.setForeground(Color.black);
-        }else{
+        } else {
             //
         }
-    }//GEN-LAST:event_txtFieldCodigoKeyTyped
+    }//GEN-LAST:event_txtFieldCodigoMouseClicked
+
+    private void txtField2CodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtField2CodigoMouseClicked
+        accum0++;
+        if (accum0 == 1) {
+            txtField2Codigo.setText("");
+            txtField2Codigo.setForeground(Color.black);
+        } else {
+
+        }    }//GEN-LAST:event_txtField2CodigoMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        String codigo = txtField2Codigo.getText();
+        if (codigo.equals("") || codigo.equals("Ingrese un Codigo")) {
+            JOptionPane.showMessageDialog(null, "El campo de codigo esta vacio", "Alerta", JOptionPane.ERROR_MESSAGE);
+        } else {
+
+            String nombre = txtField2Codigo.getText();
+            int cantidad = (int) txtField2Cantidad.getValue();
+            int precio = Integer.parseInt(txtField2PrecioCompra.getText());
+            int venta = Integer.parseInt(txtFieldPrecioVenta.getText());
+            int ganancia = Integer.parseInt(txtField2Ganancia.getText());
+            int index = 0;
+
+            for (int i = 0; i < store.size(); i++) {
+                if (store.get(i).getCodigo().equals(codigo)) {
+                    index = i;
+                    store.remove(i);
+                }
+            }
+            Entradas entrada = new Entradas(codigo, nombre, cantidad, precio, venta, ganancia);
+            store.add(index, entrada);
+            cp.setEntradasStore(store);
+
+            txtField2Codigo.setText("");
+            lblNombreProducto.setText("");
+            txtField2Cantidad.setValue(0);
+            txtField2PrecioCompra.setText("");
+            txtFieldPrecioVenta.setText("");
+            txtField2Ganancia.setText("");
+
+            JOptionPane.showMessageDialog(this, "Los datos han sido modificados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtField2GananciaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtField2GananciaKeyReleased
+        cantidad = (Integer) txtField2Cantidad.getValue();
+        precio = Integer.parseInt(txtField2PrecioCompra.getText());
+        venta = Integer.parseInt(txtFieldPrecioVenta.getText());
+
+        ganancia = 0;
+
+        ganancia = (venta - precio) * cantidad;
+
+        txtField2Ganancia.setText(ganancia + "");
+    }//GEN-LAST:event_txtField2GananciaKeyReleased
+
+    private void txtField2PrecioCompraKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtField2PrecioCompraKeyReleased
+        cantidad = (Integer) txtField2Cantidad.getValue();
+        precio = Integer.parseInt(txtField2PrecioCompra.getText());
+        venta = Integer.parseInt(txtFieldPrecioVenta.getText());
+
+        ganancia = 0;
+
+        ganancia = (venta - precio) * cantidad;
+
+        txtField2Ganancia.setText(ganancia + "");
+    }//GEN-LAST:event_txtField2PrecioCompraKeyReleased
+
+    private void tablaDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosMouseClicked
+
+
+    }//GEN-LAST:event_tablaDatosMouseClicked
+
+    private void btn2FiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2FiltrarActionPerformed
+        model.setRowCount(0);
+        String departamento = comboBox2Departamento.getSelectedItem() + "";
+        System.out.println(departamento);
+        setTableData(departamento);
+    }//GEN-LAST:event_btn2FiltrarActionPerformed
+
+    private void comboBox2DepartamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboBox2DepartamentoMouseClicked
+
+    }//GEN-LAST:event_comboBox2DepartamentoMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+
+        for (int i = 0; i < store.size(); i++) {
+            String message = "[Index: " + i + "] " + "Nombre:  " + store.get(i).getNombre() + "\n";
+            int count = message.length();
+
+            //Imprimir separador al comienzo
+            if (i == 0) {
+                String ola = "";
+                for (int j = 0; j <= count; j++) {
+                    ola += "=";
+                }
+                System.out.println(ola);
+            }
+            System.out.println("[Index: " + i + "] " + "Codigo: " + store.get(i).getCodigo());
+            System.out.println("[Index: " + i + "] " + "Nombre:  " + store.get(i).getNombre() + "\n");
+
+            //Imprimir separador al final
+            if (i == store.size() - 1) {
+                String ola = "";
+                for (int j = 0; j <= count; j++) {
+                    ola += "=";
+                }
+                System.out.println("ArrayList Size: " + store.size() + "\n\n\n");
+
+                System.out.println(ola);
+            }
+
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -697,13 +907,13 @@ public class FrmEntradas extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Salir;
     private javax.swing.JButton Salir1;
+    private javax.swing.JScrollPane ScrollTabla;
+    private javax.swing.JButton btn2Filtrar;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JComboBox<String> comboBoxDepartamento;
-    private javax.swing.JComboBox<String> comboBoxDepartamento1;
-    private javax.swing.JComboBox<String> comboBoxDepartamento2;
+    private javax.swing.JComboBox<String> comboBox2Departamento;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -724,12 +934,11 @@ public class FrmEntradas extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JLabel lblNombreProducto;
     private javax.swing.JLabel lblProducto;
     private javax.swing.JSpinner spinnerCantidad;
+    private javax.swing.JTable tablaDatos;
     private javax.swing.JTextArea txtAreaDesc;
     private javax.swing.JSpinner txtField2Cantidad;
     private javax.swing.JTextField txtField2Codigo;

@@ -245,7 +245,7 @@ public class FrmArticulo extends javax.swing.JFrame {
             int opt = JOptionPane.showConfirmDialog(this, "El codigo ingresado se encuentra en uso. \n Desea sobreescribir los valores? ", "Alerta!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
             if (opt == JOptionPane.OK_OPTION) {
-                int index;
+                int index = 0;
                 for (int i = 0; i < store.size(); i++) {
                     if (store.get(i).getCodigo().equals(codigo)) {
                         index = store.indexOf(store.get(i));
@@ -260,7 +260,7 @@ public class FrmArticulo extends javax.swing.JFrame {
                 store = ControladorArticulo.getInstance().getArticuloStore();
 
                 //Save articles
-                store.add(articulo);
+                store.add(index, articulo);
                 cp.setArticuloStore(store);
 
                 //Clear Fields
@@ -278,7 +278,7 @@ public class FrmArticulo extends javax.swing.JFrame {
             Articulo articulo = new Articulo(codigo, nombre, descripcion, departamento, categoria);
 
             //Get store items
-            store = ControladorArticulo.getInstance().getArticuloStore();
+            store = cp.getArticuloStore();
 
             //Save articles
             store.add(articulo);
