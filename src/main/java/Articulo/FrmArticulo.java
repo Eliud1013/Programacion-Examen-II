@@ -54,6 +54,7 @@ public class FrmArticulo extends javax.swing.JFrame {
         btnRegistrar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
         btnListar = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         jMenuItem1.setText("jMenuItem1");
@@ -86,6 +87,11 @@ public class FrmArticulo extends javax.swing.JFrame {
         });
 
         comboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pieza", "Paquete", "Kit", "Litro", "Mililitros", "Galon", "Kilo", "Gramos", "Costal" }));
+        comboBoxCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxCategoriaActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Categoria");
 
@@ -109,6 +115,8 @@ public class FrmArticulo extends javax.swing.JFrame {
                 btnListarActionPerformed(evt);
             }
         });
+
+        jLabel6.setText("Fecha");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -140,11 +148,16 @@ public class FrmArticulo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnListar)
                         .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(42, 42, 42))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addComponent(jLabel6)
+                .addGap(1, 1, 1)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtFieldCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,6 +265,7 @@ public class FrmArticulo extends javax.swing.JFrame {
                 txtFieldCodigo.setText("");
                 txtFieldNombre.setText("");
                 txtAreaDescripcion.setText("");
+                 JOptionPane.showMessageDialog(this, "Los datos han sido registrados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
 
             }else {
                 //Do nothing
@@ -272,6 +286,7 @@ public class FrmArticulo extends javax.swing.JFrame {
             txtFieldCodigo.setText("");
             txtFieldNombre.setText("");
             txtAreaDescripcion.setText("");
+             JOptionPane.showMessageDialog(this, "Los datos han sido registrados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
 
         }
 
@@ -316,13 +331,17 @@ public class FrmArticulo extends javax.swing.JFrame {
                 for (int j = 0; j <= count; j++) {
                     ola += "=";
                 }
-                System.out.println("ArrayList Size: " + store.size() + "\n");
+                System.out.println("ArrayList Size: " + store.size() + "\n\n\n");
 
                 System.out.println(ola);
             }
 
         }
     }//GEN-LAST:event_btnListarActionPerformed
+
+    private void comboBoxCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxCategoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboBoxCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -370,6 +389,7 @@ public class FrmArticulo extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

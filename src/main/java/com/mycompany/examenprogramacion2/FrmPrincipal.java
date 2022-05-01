@@ -1,10 +1,11 @@
 package com.mycompany.examenprogramacion2;
 import Articulo.FrmArticulo;
-
+import Entradas.FrmEntradas;
 
 public class FrmPrincipal extends javax.swing.JFrame {
     //Frames Init
-    FrmArticulo frm;
+    FrmArticulo frmArticulo;
+    FrmEntradas frmEntradas;
     
     public FrmPrincipal() {
         initComponents();
@@ -57,6 +58,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jMenu4.setText("Entradas");
 
         jMenuItem1.setText("Registrar Entradas");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem1);
 
         jMenuBar1.add(jMenu4);
@@ -108,13 +114,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
    
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         
-        if(frm == null){
-             frm = new FrmArticulo();
+        if(frmArticulo == null){
+             frmArticulo = new FrmArticulo();
         }
         
         
-        if(frm.isVisible() == false){
-            frm.setVisible(true);
+        if(frmArticulo.isVisible() == false){
+            frmArticulo.setVisible(true);
             this.dispose();
         }/** else {
             frm.requestFocus();
@@ -123,6 +129,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+          if(frmEntradas == null){
+             frmEntradas = new FrmEntradas();
+        }
+        
+        
+        if(frmEntradas.isVisible() == false){
+            frmEntradas.setVisible(true);
+            this.dispose();
+        }   
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
