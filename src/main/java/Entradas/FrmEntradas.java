@@ -40,6 +40,10 @@ public class FrmEntradas extends javax.swing.JFrame {
 
                 if (countdownStarter < 0) {
 
+                    String codigoV = "";
+                    for (int i = 0; i < store.size(); i++) {
+
+                    }
                     model.setRowCount(0);
                     for (int i = 0; i < articuloStore.size(); i++) {
                         String codigo = articuloStore.get(i).getCodigo();
@@ -48,6 +52,7 @@ public class FrmEntradas extends javax.swing.JFrame {
                         String departamento = articuloStore.get(i).getDepartamento();
                         String categoria = articuloStore.get(i).getCategoria();
                         String registrado = "";
+
                         boolean registered = isRegistered(codigo);
 
                         if (registered == false) {
@@ -95,19 +100,22 @@ public class FrmEntradas extends javax.swing.JFrame {
 
     }
 
+    //codigo articuloStore
     public boolean isRegistered(String codigo) {
+        /**
+         * store = cp.getEntradasStore(); int index = 0; for (int i = 0; i <
+         * store.size(); i++) { if (codigo.equals(store.get(i).getCodigo())) {
+         * index = i; } } String entradasCode = store.get(index).getCodigo();
+         *
+         * boolean registered = false;
+         *
+         * for (int j = 0; j < articuloStore.size(); j++) { if
+         * (entradasCode.equals(articuloStore.get(j).getCodigo())) { registered
+         * = true; }
+        }*
+         */
 
-        boolean registered = false;
-        store = cp.getEntradasStore();
-        for (int i = 0; i < store.size(); i++) {
-            for (int j = 0; j < articuloStore.size(); j++) {
-                if (store.get(i).getCodigo().equals(articuloStore.get(j).getCodigo())) {
-                    registered = true;
-                }
-            }
-
-        }
-        return registered;
+        return false;
     }
 
     private void setTableData(String departamentoFilt) {
@@ -705,7 +713,7 @@ public class FrmEntradas extends javax.swing.JFrame {
             txtFieldVenta.setText("0");
             txtFieldGanancia.setText("0");
             JOptionPane.showMessageDialog(this, "Los datos han sido registrados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
-             InsertData();
+            InsertData();
         }
 
 
@@ -760,6 +768,7 @@ public class FrmEntradas extends javax.swing.JFrame {
         if (Opcion == JOptionPane.OK_OPTION) {
             FrmPrincipal frm = new FrmPrincipal();
             frm.setVisible(true);
+            InsertData();
             this.dispose();
 
         }
@@ -932,7 +941,28 @@ public class FrmEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_txtField2PrecioCompraKeyReleased
 
     private void tablaDatosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosMouseClicked
+        int departIndex = 0;
+        int categIndex = 0;
 
+        if (evt.getClickCount() == 2) {
+            int Index = tablaDatos.getSelectedRow();
+            String codigo = articuloStore.get(Index).getCodigo();
+            String nombre = articuloStore.get(Index).getNombre();
+            String descripcion = articuloStore.get(Index).getDescripcion();
+            int cantidad = store.get(Index).getCantidad();
+            int compra = store.get(Index).getPrecio();
+            int venta = store.get(Index).getVenta();
+            int ganancia = store.get(Index).getGanancia();
+            
+            lblNombreProducto.setText(nombre);
+            txtField2Codigo.setText(codigo);
+            txtField2Codigo.setForeground(Color.black);
+            txtField2Cantidad.setValue(cantidad);
+            txtField2PrecioCompra.setText(compra + "");
+            txtFieldPrecioVenta.setText(venta + "");
+            txtField2Ganancia.setText(ganancia + "");
+
+        }
 
     }//GEN-LAST:event_tablaDatosMouseClicked
 

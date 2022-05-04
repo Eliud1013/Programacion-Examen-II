@@ -590,7 +590,7 @@ public class FrmArticulo extends javax.swing.JFrame {
         String descripcion = txtAreaDescripcion.getText();
         String departamento = comboBoxDepartamento.getSelectedItem().toString();
         String categoria = comboBoxCategoria.getSelectedItem().toString();
-
+        store = cp.getArticuloStore();
         //Verificar codigo
         boolean isUsed = verify(codigo);
         if (isUsed == true) {
@@ -786,9 +786,7 @@ public class FrmArticulo extends javax.swing.JFrame {
         for (int i = 0; i < store.size(); i++) {
             if (store.get(i).getCodigo().equals(codigo)) {
                 exists = true;
-            }  
-               
-            
+            }
 
         }
         if (exists) {
@@ -838,7 +836,38 @@ public class FrmArticulo extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void tablaDatos1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatos1MouseClicked
+        int departIndex = 0;
+        int categIndex = 0;
 
+        if (evt.getClickCount() == 2) {
+            int Index = tablaDatos1.getSelectedRow();
+            String codigo = store.get(Index).getCodigo();
+            String nombre = store.get(Index).getNombre();
+            String descripcion = store.get(Index).getDescripcion();
+            String departamento = store.get(Index).getDepartamento();
+            String categoria = store.get(Index).getCategoria();
+            
+            for (int i = 0; i < comboBox2Depart.getItemCount(); i++) {
+                if (departamento.equals(comboBox2Depart.getItemAt(i))) {
+                    departIndex = i;
+
+                }
+            }
+            for (int i = 0; i < comboBox2Categ.getItemCount(); i++) {
+                if (categoria.equals(comboBox2Categ.getItemAt(i))) {
+                    categIndex = i;
+                }
+            }
+
+            txtField2Nombre.setText(nombre);
+            txtField2Codigo.setText(codigo);
+            txtField2Codigo.setForeground(Color.black);
+            txtField2Codigo2.setText(codigo);
+            txtArea2Desc.setText(descripcion);
+            comboBox2Categ.setSelectedIndex(categIndex);
+            comboBox2Depart.setSelectedIndex(departIndex);
+
+        }
     }//GEN-LAST:event_tablaDatos1MouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
