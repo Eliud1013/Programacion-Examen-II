@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class ControladorArticulo {
     
     private ArrayList<Articulo> articuloStore = new ArrayList<>();
-    static ControladorArticulo controlador;
+    private static ControladorArticulo controlador;
     
     public static ControladorArticulo getInstance(){
         if(controlador == null){

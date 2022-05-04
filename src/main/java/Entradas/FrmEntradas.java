@@ -5,11 +5,15 @@ import Articulo.ControladorArticulo;
 import com.mycompany.examenprogramacion2.FrmPrincipal;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class FrmEntradas extends javax.swing.JFrame {
 
+    int tCounter = 0;
     //Articulos
     ArrayList<Articulo> articuloStore = ControladorArticulo.getInstance().getArticuloStore();
 
@@ -20,35 +24,142 @@ public class FrmEntradas extends javax.swing.JFrame {
 
     DefaultTableModel model = new DefaultTableModel();
 
+    private void InsertData() {
+        String[] datos = new String[6];
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+        final Runnable runnable;
+
+        runnable = new Runnable() {
+            int countdownStarter = 1;
+
+            public void run() {
+
+                System.out.println(countdownStarter);
+                countdownStarter--;
+
+                if (countdownStarter < 0) {
+
+                    model.setRowCount(0);
+                    for (int i = 0; i < articuloStore.size(); i++) {
+                        String codigo = articuloStore.get(i).getCodigo();
+                        String nombre = articuloStore.get(i).getNombre();
+                        String descripcion = articuloStore.get(i).getDescripcion();
+                        String departamento = articuloStore.get(i).getDepartamento();
+                        String categoria = articuloStore.get(i).getCategoria();
+                        String registrado = "";
+                        boolean registered = isRegistered(codigo);
+
+                        if (registered == false) {
+                            registrado = "No registrado";
+                        } else {
+                            registrado = "Registrado";
+                        }
+
+                        datos[0] = codigo;
+                        datos[1] = nombre;
+                        datos[2] = descripcion;
+                        datos[3] = departamento;
+                        datos[4] = categoria;
+                        datos[5] = registrado;
+                        model.addRow(datos);
+                        comboBox2Departamento.setSelectedIndex(0);
+
+                    }
+                    for (int i = 0; i < tablaDatos.getColumnCount(); i++) {
+                        Class<?> col_class = tablaDatos.getColumnClass(i);
+                        tablaDatos.setDefaultEditor(col_class, null);
+
+                    }
+                    scheduler.shutdown();
+
+                }
+            }
+
+        };
+        scheduler.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.SECONDS);
+
+    }
+
     public FrmEntradas() {
         initComponents();
         setLocationRelativeTo(null);
         //Tabla
-
+        model.addColumn("Codigo");
         model.addColumn("Nombre");
         model.addColumn("Descripcion");
         model.addColumn("Departamento");
         model.addColumn("Categoria");
+        model.addColumn("Registrado");
         tablaDatos.setModel(model);
 
     }
 
-    
+    public boolean isRegistered(String codigo) {
+
+        boolean registered = false;
+        store = cp.getEntradasStore();
+        for (int i = 0; i < store.size(); i++) {
+            for (int j = 0; j < articuloStore.size(); j++) {
+                if (store.get(i).getCodigo().equals(articuloStore.get(j).getCodigo())) {
+                    registered = true;
+                }
+            }
+
+        }
+        return registered;
+    }
 
     private void setTableData(String departamentoFilt) {
-        String[] datos = new String[4];
-
-        for (int i = 0; i < articuloStore.size(); i++) {
-            if (articuloStore.get(i).getDepartamento().equals(departamentoFilt)) {
+        String[] datos = new String[6];
+        if (departamentoFilt.equals("Todos")) {
+            for (int i = 0; i < articuloStore.size(); i++) {
+                String codigo = articuloStore.get(i).getCodigo();
                 String Nombre = articuloStore.get(i).getNombre();
                 String descripcion = articuloStore.get(i).getDescripcion();
                 String departamento = articuloStore.get(i).getDepartamento();
                 String categoria = articuloStore.get(i).getCategoria();
+                String registrado = "";
+                boolean registered = isRegistered(codigo);
 
-                datos[0] = Nombre;
-                datos[1] = descripcion;
-                datos[2] = departamento;
-                datos[3] = categoria;
+                if (registered == false) {
+                    registrado = "No registrado";
+                } else {
+                    registrado = "Registrado";
+                }
+
+                datos[0] = codigo;
+                datos[1] = Nombre;
+                datos[2] = descripcion;
+                datos[3] = departamento;
+                datos[4] = categoria;
+                datos[5] = registrado;
+                model.addRow(datos);
+
+            }
+        }
+        for (int i = 0; i < articuloStore.size(); i++) {
+            if (articuloStore.get(i).getDepartamento().equals(departamentoFilt)) {
+                String codigo = articuloStore.get(i).getCodigo();
+                String Nombre = articuloStore.get(i).getNombre();
+                String descripcion = articuloStore.get(i).getDescripcion();
+                String departamento = articuloStore.get(i).getDepartamento();
+                String categoria = articuloStore.get(i).getCategoria();
+                String registrado = "";
+                boolean registered = isRegistered(codigo);
+
+                if (registered == false) {
+                    registrado = "No registrado";
+                } else {
+                    registrado = "Registrado";
+                }
+
+                datos[0] = codigo;
+                datos[1] = Nombre;
+                datos[2] = descripcion;
+                datos[3] = departamento;
+                datos[4] = categoria;
+                datos[5] = registrado;
                 model.addRow(datos);
             }
 
@@ -56,8 +167,6 @@ public class FrmEntradas extends javax.swing.JFrame {
         for (int i = 0; i < tablaDatos.getColumnCount(); i++) {
             Class<?> col_class = tablaDatos.getColumnClass(i);
             tablaDatos.setDefaultEditor(col_class, null);
-                    
-            
 
         }
     }
@@ -112,10 +221,15 @@ public class FrmEntradas extends javax.swing.JFrame {
         Salir1 = new javax.swing.JButton();
         ScrollTabla = new javax.swing.JScrollPane();
         tablaDatos = new javax.swing.JTable();
-        btn2Filtrar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         jLabel9.setText("Codigo");
 
@@ -424,10 +538,10 @@ public class FrmEntradas extends javax.swing.JFrame {
         jLabel7.setText("Mostrar articulos por Departamento");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
-        comboBox2Departamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Abarrotes", "Lacteos", "Bebidas", "Frutas y Verduras", "Electronica", "Linea Blanca", "Escolares", "Limpieza", "Ingiene", "Belleza", "Bebes", "Damas", "Caballeros" }));
-        comboBox2Departamento.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                comboBox2DepartamentoMouseClicked(evt);
+        comboBox2Departamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Abarrotes", "Lacteos", "Bebidas", "Frutas y Verduras", "Electronica", "Linea Blanca", "Escolares", "Limpieza", "Ingiene", "Belleza", "Bebes", "Damas", "Caballeros" }));
+        comboBox2Departamento.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboBox2DepartamentoItemStateChanged(evt);
             }
         });
         jPanel2.add(comboBox2Departamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 145, 236, -1));
@@ -485,14 +599,6 @@ public class FrmEntradas extends javax.swing.JFrame {
 
         jPanel2.add(ScrollTabla, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 390, 390));
 
-        btn2Filtrar.setText("Filtrar");
-        btn2Filtrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn2FiltrarActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btn2Filtrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, -1, -1));
-
         jButton1.setText("jButton1");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -544,6 +650,7 @@ public class FrmEntradas extends javax.swing.JFrame {
 
                     store.remove(index);
                     cp.setEntradasStore(store);
+                    InsertData();
 
                 }
             }
@@ -598,7 +705,7 @@ public class FrmEntradas extends javax.swing.JFrame {
             txtFieldVenta.setText("0");
             txtFieldGanancia.setText("0");
             JOptionPane.showMessageDialog(this, "Los datos han sido registrados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
-
+             InsertData();
         }
 
 
@@ -739,6 +846,7 @@ public class FrmEntradas extends javax.swing.JFrame {
         if (Opcion == JOptionPane.OK_OPTION) {
             FrmPrincipal frm = new FrmPrincipal();
             frm.setVisible(true);
+            tCounter = 0;
             this.dispose();
 
         }
@@ -795,6 +903,7 @@ public class FrmEntradas extends javax.swing.JFrame {
             txtField2Ganancia.setText("");
 
             JOptionPane.showMessageDialog(this, "Los datos han sido modificados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
+            InsertData();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -826,17 +935,6 @@ public class FrmEntradas extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_tablaDatosMouseClicked
-
-    private void btn2FiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn2FiltrarActionPerformed
-        model.setRowCount(0);
-        String departamento = comboBox2Departamento.getSelectedItem() + "";
-        System.out.println(departamento);
-        setTableData(departamento);
-    }//GEN-LAST:event_btn2FiltrarActionPerformed
-
-    private void comboBox2DepartamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboBox2DepartamentoMouseClicked
-
-    }//GEN-LAST:event_comboBox2DepartamentoMouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         System.out.print("\033[H\033[2J");
@@ -870,6 +968,20 @@ public class FrmEntradas extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        tCounter++;
+        if (tCounter == 1) {
+            InsertData();
+        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
+
+    private void comboBox2DepartamentoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBox2DepartamentoItemStateChanged
+        model.setRowCount(0);
+        String departamento = comboBox2Departamento.getSelectedItem() + "";
+
+        setTableData(departamento);
+    }//GEN-LAST:event_comboBox2DepartamentoItemStateChanged
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -908,7 +1020,6 @@ public class FrmEntradas extends javax.swing.JFrame {
     private javax.swing.JButton Salir;
     private javax.swing.JButton Salir1;
     private javax.swing.JScrollPane ScrollTabla;
-    private javax.swing.JButton btn2Filtrar;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JComboBox<String> comboBox2Departamento;
     private javax.swing.JButton jButton1;

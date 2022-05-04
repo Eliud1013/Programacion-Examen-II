@@ -38,6 +38,9 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jTabbedPane1StateChanged"/>
+      </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -525,25 +528,26 @@
             <Component class="javax.swing.JComboBox" name="comboBox2Departamento">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="13">
-                    <StringItem index="0" value="Abarrotes"/>
-                    <StringItem index="1" value="Lacteos"/>
-                    <StringItem index="2" value="Bebidas"/>
-                    <StringItem index="3" value="Frutas y Verduras"/>
-                    <StringItem index="4" value="Electronica"/>
-                    <StringItem index="5" value="Linea Blanca"/>
-                    <StringItem index="6" value="Escolares"/>
-                    <StringItem index="7" value="Limpieza"/>
-                    <StringItem index="8" value="Ingiene"/>
-                    <StringItem index="9" value="Belleza"/>
-                    <StringItem index="10" value="Bebes"/>
-                    <StringItem index="11" value="Damas"/>
-                    <StringItem index="12" value="Caballeros"/>
+                  <StringArray count="14">
+                    <StringItem index="0" value="Todos"/>
+                    <StringItem index="1" value="Abarrotes"/>
+                    <StringItem index="2" value="Lacteos"/>
+                    <StringItem index="3" value="Bebidas"/>
+                    <StringItem index="4" value="Frutas y Verduras"/>
+                    <StringItem index="5" value="Electronica"/>
+                    <StringItem index="6" value="Linea Blanca"/>
+                    <StringItem index="7" value="Escolares"/>
+                    <StringItem index="8" value="Limpieza"/>
+                    <StringItem index="9" value="Ingiene"/>
+                    <StringItem index="10" value="Belleza"/>
+                    <StringItem index="11" value="Bebes"/>
+                    <StringItem index="12" value="Damas"/>
+                    <StringItem index="13" value="Caballeros"/>
                   </StringArray>
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="comboBox2DepartamentoMouseClicked"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="comboBox2DepartamentoItemStateChanged"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -683,19 +687,6 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="btn2Filtrar">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Filtrar"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn2FiltrarActionPerformed"/>
-              </Events>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="270" y="140" width="-1" height="-1"/>
-                </Constraint>
-              </Constraints>
-            </Component>
             <Component class="javax.swing.JButton" name="jButton1">
               <Properties>
                 <Property name="text" type="java.lang.String" value="jButton1"/>
