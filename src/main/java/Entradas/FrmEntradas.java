@@ -774,6 +774,7 @@ public class FrmEntradas extends javax.swing.JFrame {
         int Opcion = JOptionPane.showConfirmDialog(this, "Desea salir? ", "Registrar Entradas", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (Opcion == JOptionPane.OK_OPTION) {
+            FrmPrincipal.counter = 99;
             FrmPrincipal frm = new FrmPrincipal();
             frm.setVisible(true);
             InsertData();

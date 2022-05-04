@@ -1,17 +1,16 @@
 package com.mycompany.examenprogramacion2;
 
+import Modales.Modal;
 import Articulo.FrmArticulo;
 import Entradas.FrmEntradas;
 import java.awt.Color;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class FrmPrincipal extends javax.swing.JFrame {
 
+    public static int counter = 0;
     //Frames Init
     FrmArticulo frmArticulo;
     FrmEntradas frmEntradas;
@@ -19,7 +18,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
     public FrmPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
-        registerModal();
+        message.setVisible(false);
+        jLabel1.setVisible(false);
+        //
+        lblOptCatalogo.setVisible(false);
+        btnOptCatalogo.setVisible(false);
+        lblOptRegistrarArt.setVisible(false);
+        btnOptRegistarArt.setVisible(false);
+        lblOptRegistrarSalida.setVisible(false);
+        btnOptRegistarSalida.setVisible(false);
+        if (counter <= 2) {
+            registerModal();
+
+        } else {
+            showOptions();
+        }
 
     }
     //Modal
@@ -31,24 +44,24 @@ public class FrmPrincipal extends javax.swing.JFrame {
         final Runnable runnable;
 
         runnable = new Runnable() {
-            int countdownStarter = 1;
+            int countdownStarter = 500;
 
             public void run() {
 
                 countdownStarter--;
 
                 if (countdownStarter < 0) {
+                    modal.getContentPane().setBackground(Color.white);
                     modal.setLocationRelativeTo(null);
                     modal.setVisible(true);
-                    
-                    
+
                     scheduler.shutdown();
 
                 }
             }
 
         };
-        scheduler.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.SECONDS);
+        scheduler.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.MILLISECONDS);
     }
 
     @SuppressWarnings("unchecked")
@@ -56,6 +69,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        message = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblOptCatalogo = new javax.swing.JLabel();
+        btnOptCatalogo = new javax.swing.JButton();
+        btnOptRegistarArt = new javax.swing.JButton();
+        lblOptRegistrarArt = new javax.swing.JLabel();
+        lblOptRegistrarSalida = new javax.swing.JLabel();
+        btnOptRegistarSalida = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -73,6 +94,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jMenu10 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -84,6 +112,39 @@ public class FrmPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        message.setFont(new java.awt.Font("FreeSerif", 1, 27)); // NOI18N
+        message.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        message.setText("jLabel1");
+
+        jLabel1.setFont(new java.awt.Font("Fira Code Medium", 0, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("jLabel1");
+
+        lblOptCatalogo.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        lblOptCatalogo.setText("Mirar Catalogo");
+
+        btnOptCatalogo.setText("Ir");
+
+        btnOptRegistarArt.setText("Ir");
+        btnOptRegistarArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOptRegistarArtActionPerformed(evt);
+            }
+        });
+
+        lblOptRegistrarArt.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        lblOptRegistrarArt.setText("Registrar un Articulo");
+
+        lblOptRegistrarSalida.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        lblOptRegistrarSalida.setText("Registrar un Salida");
+
+        btnOptRegistarSalida.setText("Ir");
+        btnOptRegistarSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOptRegistarSalidaActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("Catalogo");
 
@@ -150,11 +211,51 @@ public class FrmPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 817, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(message, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
+                                .addComponent(btnOptCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(83, 83, 83)
+                                .addComponent(btnOptRegistarArt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(75, 75, 75))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addComponent(lblOptCatalogo)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lblOptRegistrarArt)
+                                .addGap(64, 64, 64)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnOptRegistarSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblOptRegistrarSalida))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 254, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(144, 144, 144)
+                .addComponent(message)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel1)
+                .addGap(63, 63, 63)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblOptRegistrarSalida)
+                    .addComponent(lblOptRegistrarArt)
+                    .addComponent(lblOptCatalogo))
+                .addGap(52, 52, 52)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnOptRegistarSalida)
+                    .addComponent(btnOptRegistarArt)
+                    .addComponent(btnOptCatalogo))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
 
         pack();
@@ -188,6 +289,50 @@ public class FrmPrincipal extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void showOptions() {
+
+        String name = Modal.getNombre();
+        message.setVisible(true);
+        jLabel1.setVisible(true);
+        lblOptCatalogo.setVisible(true);
+        btnOptCatalogo.setVisible(true);
+        lblOptRegistrarArt.setVisible(true);
+        btnOptRegistarArt.setVisible(true);
+        lblOptRegistrarSalida.setVisible(true);
+        btnOptRegistarSalida.setVisible(true);
+        message.setText("Bienvenido " + name);
+        jLabel1.setText("¿Que desea hacer hoy?");
+    }
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        counter++;
+
+        if (counter == 2) {
+            showOptions();
+
+        }
+    }//GEN-LAST:event_formWindowGainedFocus
+
+    private void btnOptRegistarArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptRegistarArtActionPerformed
+        if (frmArticulo == null) {
+            frmArticulo = new FrmArticulo();
+        }
+
+        if (frmArticulo.isVisible() == false) {
+            frmArticulo.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnOptRegistarArtActionPerformed
+
+    private void btnOptRegistarSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOptRegistarSalidaActionPerformed
+        if (frmEntradas == null) {
+            frmEntradas = new FrmEntradas();
+        }
+
+        if (frmEntradas.isVisible() == false) {
+            frmEntradas.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnOptRegistarSalidaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,6 +370,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOptCatalogo;
+    private javax.swing.JButton btnOptRegistarArt;
+    private javax.swing.JButton btnOptRegistarSalida;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
@@ -241,5 +390,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblOptCatalogo;
+    private javax.swing.JLabel lblOptRegistrarArt;
+    private javax.swing.JLabel lblOptRegistrarSalida;
+    private javax.swing.JLabel message;
     // End of variables declaration//GEN-END:variables
 }
