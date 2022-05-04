@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 
 public class ControladorEntradas {
-     ArrayList<Entradas> entradasStore = new ArrayList<>();
-    static ControladorEntradas controlador;
+     private ArrayList<Entradas> entradasStore = new ArrayList<>();
+    private static ControladorEntradas controlador;
     
 
     public static ControladorEntradas getInstance(){

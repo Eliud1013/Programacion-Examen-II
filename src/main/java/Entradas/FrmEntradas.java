@@ -2,6 +2,7 @@ package Entradas;
 
 import Articulo.Articulo;
 import Articulo.ControladorArticulo;
+import Articulo.FrmArticulo;
 import com.mycompany.examenprogramacion2.FrmPrincipal;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class FrmEntradas extends javax.swing.JFrame {
 
-    int tCounter = 0;
+    public static int tCounter = 0;
     //Articulos
     ArrayList<Articulo> articuloStore = ControladorArticulo.getInstance().getArticuloStore();
 
@@ -35,7 +36,6 @@ public class FrmEntradas extends javax.swing.JFrame {
 
             public void run() {
 
-                
                 countdownStarter--;
 
                 if (countdownStarter < 0) {
@@ -97,25 +97,25 @@ public class FrmEntradas extends javax.swing.JFrame {
         model.addColumn("Categoria");
         model.addColumn("Registrado");
         tablaDatos.setModel(model);
+        store = cp.getEntradasStore();
 
     }
 
     //codigo articuloStore
     public boolean isRegistered(String codigo) {
-        /**
-         * store = cp.getEntradasStore(); int index = 0; for (int i = 0; i <
-         * store.size(); i++) { if (codigo.equals(store.get(i).getCodigo())) {
-         * index = i; } } String entradasCode = store.get(index).getCodigo();
-         *
-         * boolean registered = false;
-         *
-         * for (int j = 0; j < articuloStore.size(); j++) { if
-         * (entradasCode.equals(articuloStore.get(j).getCodigo())) { registered
-         * = true; }
-        }*
-         */
+        boolean registered = false;
+        store = cp.getEntradasStore();
+        int index = 0;
+        for (int i = 0; i < store.size(); i++) {
+            if (codigo.equals(store.get(i).getCodigo())) {
+                index = i;
+                registered = true;
+            }
+        }
+        return registered;
+//        String entradasCode = store.get(index).getCodigo();
 
-        return false;
+//        boolean registered = false;
     }
 
     private void setTableData(String departamentoFilt) {
@@ -865,6 +865,7 @@ public class FrmEntradas extends javax.swing.JFrame {
             FrmPrincipal frm = new FrmPrincipal();
             frm.setVisible(true);
             tCounter = 0;
+            
             this.dispose();
 
         }
@@ -962,7 +963,7 @@ public class FrmEntradas extends javax.swing.JFrame {
             int compra = store.get(Index).getPrecio();
             int venta = store.get(Index).getVenta();
             int ganancia = store.get(Index).getGanancia();
-            
+
             lblNombreProducto.setText(nombre);
             txtField2Codigo.setText(codigo);
             txtField2Codigo.setForeground(Color.black);
@@ -1010,9 +1011,13 @@ public class FrmEntradas extends javax.swing.JFrame {
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         tCounter++;
+         if(tCounter >= 2){
+            tCounter = 0;
+        }
         if (tCounter == 1) {
             InsertData();
         }
+        
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void comboBox2DepartamentoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBox2DepartamentoItemStateChanged
@@ -1023,7 +1028,7 @@ public class FrmEntradas extends javax.swing.JFrame {
     }//GEN-LAST:event_comboBox2DepartamentoItemStateChanged
 
     private void txtFieldPrecioVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFieldPrecioVentaKeyReleased
-         cantidad = (Integer) txtField2Cantidad.getValue();
+        cantidad = (Integer) txtField2Cantidad.getValue();
         precio = Integer.parseInt(txtField2PrecioCompra.getText());
         venta = Integer.parseInt(txtFieldPrecioVenta.getText());
 

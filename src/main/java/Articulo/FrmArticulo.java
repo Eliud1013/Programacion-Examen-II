@@ -1,5 +1,6 @@
 package Articulo;
 
+import Entradas.FrmEntradas;
 import com.mycompany.examenprogramacion2.FrmPrincipal;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -23,7 +24,11 @@ public class FrmArticulo extends javax.swing.JFrame {
         model.addColumn("Descripcion");
         model.addColumn("Departamento");
         model.addColumn("Categoria");
-        tablaDatos1.setModel(model);
+        tablaDatos1.setModel(model); 
+          store = cp.getArticuloStore();
+         counter();
+         InsertData();
+         System.out.println("=============");
 
     }
 
@@ -41,7 +46,7 @@ public class FrmArticulo extends javax.swing.JFrame {
 
             public void run() {
 
-                System.out.println(countdownStarter);
+                
                 countdownStarter--;
 
                 if (countdownStarter < 0) {
@@ -858,7 +863,7 @@ public class FrmArticulo extends javax.swing.JFrame {
             String descripcion = store.get(Index).getDescripcion();
             String departamento = store.get(Index).getDepartamento();
             String categoria = store.get(Index).getCategoria();
-            
+
             for (int i = 0; i < comboBox2Depart.getItemCount(); i++) {
                 if (departamento.equals(comboBox2Depart.getItemAt(i))) {
                     departIndex = i;
@@ -914,12 +919,18 @@ public class FrmArticulo extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+    private void counter(){
         tCounter++;
+        System.out.println("Ah " + tCounter);
+        if(tCounter >= 2){
+            tCounter = 0;
+        }
         if (tCounter == 1) {
             InsertData();
         }
+    }
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        counter();
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -944,7 +955,7 @@ public class FrmArticulo extends javax.swing.JFrame {
             }
 
         }
-
+        FrmEntradas.tCounter = 0;
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
