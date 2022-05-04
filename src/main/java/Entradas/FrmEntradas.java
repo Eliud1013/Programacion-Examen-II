@@ -35,7 +35,7 @@ public class FrmEntradas extends javax.swing.JFrame {
 
             public void run() {
 
-                System.out.println(countdownStarter);
+                
                 countdownStarter--;
 
                 if (countdownStarter < 0) {
@@ -522,6 +522,11 @@ public class FrmEntradas extends javax.swing.JFrame {
                 txtFieldPrecioVentaActionPerformed(evt);
             }
         });
+        txtFieldPrecioVenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtFieldPrecioVentaKeyReleased(evt);
+            }
+        });
         jPanel2.add(txtFieldPrecioVenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(401, 282, 176, -1));
 
         jLabel5.setText("Precio de Venta");
@@ -628,7 +633,10 @@ public class FrmEntradas extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jTabbedPane1)
+                .addContainerGap())
         );
 
         pack();
@@ -1012,6 +1020,18 @@ public class FrmEntradas extends javax.swing.JFrame {
 
         setTableData(departamento);
     }//GEN-LAST:event_comboBox2DepartamentoItemStateChanged
+
+    private void txtFieldPrecioVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtFieldPrecioVentaKeyReleased
+         cantidad = (Integer) txtField2Cantidad.getValue();
+        precio = Integer.parseInt(txtField2PrecioCompra.getText());
+        venta = Integer.parseInt(txtFieldPrecioVenta.getText());
+
+        ganancia = 0;
+
+        ganancia = (venta - precio) * cantidad;
+
+        txtField2Ganancia.setText(ganancia + "");
+    }//GEN-LAST:event_txtFieldPrecioVentaKeyReleased
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

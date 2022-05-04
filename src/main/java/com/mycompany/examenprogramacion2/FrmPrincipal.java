@@ -1,25 +1,61 @@
 package com.mycompany.examenprogramacion2;
+
 import Articulo.FrmArticulo;
 import Entradas.FrmEntradas;
+import java.awt.Color;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class FrmPrincipal extends javax.swing.JFrame {
+
     //Frames Init
     FrmArticulo frmArticulo;
     FrmEntradas frmEntradas;
-    
+
     public FrmPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
-        
+        registerModal();
+
+    }
+    //Modal
+    Modal modal = new Modal(this, true);
+
+    private void registerModal() {
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+        final Runnable runnable;
+
+        runnable = new Runnable() {
+            int countdownStarter = 1;
+
+            public void run() {
+
+                countdownStarter--;
+
+                if (countdownStarter < 0) {
+                    modal.setLocationRelativeTo(null);
+                    modal.setVisible(true);
+                    
+                    
+                    scheduler.shutdown();
+
+                }
+            }
+
+        };
+        scheduler.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.SECONDS);
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem6 = new javax.swing.JMenuItem();
@@ -48,8 +84,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-
-        jLabel1.setText("jLabel1");
 
         jMenu1.setText("Catalogo");
 
@@ -116,51 +150,43 @@ public class FrmPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(296, 296, 296)
-                .addComponent(jLabel1)
-                .addContainerGap(476, Short.MAX_VALUE))
+            .addGap(0, 817, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(jLabel1)
-                .addContainerGap(439, Short.MAX_VALUE))
+            .addGap(0, 522, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-   
+
+
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        
-        if(frmArticulo == null){
-             frmArticulo = new FrmArticulo();
+
+        if (frmArticulo == null) {
+            frmArticulo = new FrmArticulo();
         }
-        
-        
-        if(frmArticulo.isVisible() == false){
+
+        if (frmArticulo.isVisible() == false) {
             frmArticulo.setVisible(true);
             this.dispose();
-        }/** else {
-            frm.requestFocus();
-        } **/
-        
-        
-        
+        }
+        /**
+         * else { frm.requestFocus(); } *
+         */
+
+
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-          if(frmEntradas == null){
-             frmEntradas = new FrmEntradas();
+        if (frmEntradas == null) {
+            frmEntradas = new FrmEntradas();
         }
-        
-        
-        if(frmEntradas.isVisible() == false){
+
+        if (frmEntradas.isVisible() == false) {
             frmEntradas.setVisible(true);
             this.dispose();
-        }   
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
@@ -199,7 +225,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
