@@ -2,7 +2,6 @@ package Entradas;
 
 import Articulo.Articulo;
 import Articulo.ControladorArticulo;
-import Articulo.FrmArticulo;
 import com.mycompany.examenprogramacion2.FrmPrincipal;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -88,7 +87,10 @@ public class FrmEntradas extends javax.swing.JFrame {
 
     public FrmEntradas() {
         initComponents();
+
         setLocationRelativeTo(null);
+        txtField2Cantidad.setValue(1);
+        txtField2Cantidad.setValue(1);
         //Tabla
         model.addColumn("Codigo");
         model.addColumn("Nombre");
@@ -231,7 +233,12 @@ public class FrmEntradas extends javax.swing.JFrame {
         tablaDatos = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -242,7 +249,7 @@ public class FrmEntradas extends javax.swing.JFrame {
         jLabel9.setText("Codigo");
 
         txtFieldCodigo.setForeground(new java.awt.Color(150, 150, 150));
-        txtFieldCodigo.setText("Ingrese un codigo");
+        txtFieldCodigo.setText("Ingrese un codigo...");
         txtFieldCodigo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 txtFieldCodigoMouseClicked(evt);
@@ -696,11 +703,15 @@ public class FrmEntradas extends javax.swing.JFrame {
     int precioTotal;
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        codigo = txtFieldCodigo.getText();
+        boolean exists = verify(codigo);
 
-        if (txtFieldCodigo.getText().equals("")) {
+        if (txtFieldCodigo.getText().equals("") || txtFieldCodigo.getText().equals("Ingrese un codigo...")) {
             JOptionPane.showMessageDialog(null, "El campo de codigo esta vacio", "Alerta", JOptionPane.ERROR_MESSAGE);
+        } else if (exists == false) {
+            JOptionPane.showMessageDialog(this, "El codigo de articulo no existe", "Atencion!", JOptionPane.ERROR_MESSAGE);
         } else {
-            codigo = txtFieldCodigo.getText();
+
             nombre = txtFieldNombre.getText();
 
             Entradas entrada = new Entradas(codigo, nombre, cantidad, precio, venta, ganancia);
@@ -865,7 +876,7 @@ public class FrmEntradas extends javax.swing.JFrame {
             FrmPrincipal frm = new FrmPrincipal();
             frm.setVisible(true);
             tCounter = 0;
-            
+
             this.dispose();
 
         }
@@ -882,6 +893,23 @@ public class FrmEntradas extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtFieldCodigoMouseClicked
 
+    public boolean verify(String codigo) {
+        boolean exists = false;
+        try {
+            for (int i = 0; i < articuloStore.size(); i++) {
+                if (codigo.equals(articuloStore.get(i).getCodigo()) == true) {
+                    exists = true;
+                }
+
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return exists;
+
+    }
+
     private void txtField2CodigoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtField2CodigoMouseClicked
         accum0++;
         if (accum0 == 1) {
@@ -893,8 +921,13 @@ public class FrmEntradas extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String codigo = txtField2Codigo.getText();
-        if (codigo.equals("") || codigo.equals("Ingrese un Codigo")) {
+        boolean exists = verify(codigo);
+
+        if (codigo.equals("") || codigo.equals("Ingrese un Codigo...")) {
             JOptionPane.showMessageDialog(null, "El campo de codigo esta vacio", "Alerta", JOptionPane.ERROR_MESSAGE);
+        } else if (exists == false) {
+
+            JOptionPane.showMessageDialog(this, "Codigo no registrado o inexistente", "Atencion!", JOptionPane.ERROR_MESSAGE);
         } else {
 
             String nombre = txtField2Codigo.getText();
@@ -955,23 +988,32 @@ public class FrmEntradas extends javax.swing.JFrame {
         int categIndex = 0;
 
         if (evt.getClickCount() == 2) {
-            int Index = tablaDatos.getSelectedRow();
-            String codigo = articuloStore.get(Index).getCodigo();
-            String nombre = articuloStore.get(Index).getNombre();
-            String descripcion = articuloStore.get(Index).getDescripcion();
-            int cantidad = store.get(Index).getCantidad();
-            int compra = store.get(Index).getPrecio();
-            int venta = store.get(Index).getVenta();
-            int ganancia = store.get(Index).getGanancia();
+            try {
+                int Index = tablaDatos.getSelectedRow();
 
-            lblNombreProducto.setText(nombre);
-            txtField2Codigo.setText(codigo);
-            txtField2Codigo.setForeground(Color.black);
-            txtField2Cantidad.setValue(cantidad);
-            txtField2PrecioCompra.setText(compra + "");
-            txtFieldPrecioVenta.setText(venta + "");
-            txtField2Ganancia.setText(ganancia + "");
+                String codigo = articuloStore.get(Index).getCodigo();
 
+                String nombre = articuloStore.get(Index).getNombre();
+                String descripcion = articuloStore.get(Index).getDescripcion();
+                if (store.get(Index) == null) {
+                    System.out.println("No exiteasdad");
+                } else {
+                    int cantidad = store.get(Index).getCantidad();
+                    int compra = store.get(Index).getPrecio();
+                    int venta = store.get(Index).getVenta();
+                    int ganancia = store.get(Index).getGanancia();
+                    lblNombreProducto.setText(nombre);
+                    txtField2Codigo.setText(codigo);
+                    txtField2Codigo.setForeground(Color.black);
+                    txtField2Cantidad.setValue(cantidad);
+                    txtField2PrecioCompra.setText(compra + "");
+                    txtFieldPrecioVenta.setText(venta + "");
+                    txtField2Ganancia.setText(ganancia + "");
+                }
+
+            } catch (java.lang.IndexOutOfBoundsException e) {
+                JOptionPane.showMessageDialog(null, "Articulo sin entradas.", "Articulo no registrado", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
     }//GEN-LAST:event_tablaDatosMouseClicked
@@ -1011,13 +1053,13 @@ public class FrmEntradas extends javax.swing.JFrame {
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         tCounter++;
-         if(tCounter >= 2){
+        if (tCounter >= 2) {
             tCounter = 0;
         }
         if (tCounter == 1) {
             InsertData();
         }
-        
+
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void comboBox2DepartamentoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBox2DepartamentoItemStateChanged
@@ -1038,6 +1080,19 @@ public class FrmEntradas extends javax.swing.JFrame {
 
         txtField2Ganancia.setText(ganancia + "");
     }//GEN-LAST:event_txtFieldPrecioVentaKeyReleased
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int Opcion = JOptionPane.showConfirmDialog(this, "Desea salir? ", "Registrar Entradas", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (Opcion == JOptionPane.OK_OPTION) {
+            FrmPrincipal.counter = 99;
+            FrmPrincipal frm = new FrmPrincipal();
+            frm.setVisible(true);
+            InsertData();
+            this.dispose();
+
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

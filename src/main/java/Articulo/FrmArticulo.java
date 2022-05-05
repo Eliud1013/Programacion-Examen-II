@@ -24,11 +24,11 @@ public class FrmArticulo extends javax.swing.JFrame {
         model.addColumn("Descripcion");
         model.addColumn("Departamento");
         model.addColumn("Categoria");
-        tablaDatos1.setModel(model); 
-          store = cp.getArticuloStore();
-         counter();
-         InsertData();
-         System.out.println("=============");
+        tablaDatos1.setModel(model);
+        store = cp.getArticuloStore();
+        counter();
+        InsertData();
+        System.out.println("=============");
 
     }
 
@@ -46,7 +46,6 @@ public class FrmArticulo extends javax.swing.JFrame {
 
             public void run() {
 
-                
                 countdownStarter--;
 
                 if (countdownStarter < 0) {
@@ -223,7 +222,15 @@ public class FrmArticulo extends javax.swing.JFrame {
         });
         ScrollTabla.setViewportView(tablaDatos);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -608,9 +615,12 @@ public class FrmArticulo extends javax.swing.JFrame {
         String departamento = comboBoxDepartamento.getSelectedItem().toString();
         String categoria = comboBoxCategoria.getSelectedItem().toString();
         store = cp.getArticuloStore();
-        //Verificar codigo
         boolean isUsed = verify(codigo);
-        if (isUsed == true) {
+
+        //Comprobar campos
+        if (codigo.equals("") || nombre.equals("") || descripcion.equals("")) {
+            JOptionPane.showMessageDialog(this, "Campos vacios", "Atencion!", JOptionPane.ERROR_MESSAGE);
+        } else if (isUsed == true) {
             //JOptionPane.showMessageDialog(null, "El codigo introducido ya esta en uso", "Alerta", JOptionPane.ERROR_MESSAGE);
 
             int opt = JOptionPane.showConfirmDialog(this, "El codigo ingresado se encuentra en uso. \n Desea sobreescribir los valores? ", "Alerta!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -806,10 +816,12 @@ public class FrmArticulo extends javax.swing.JFrame {
             }
 
         }
-        if (exists) {
+        if (codigo.equals("") || codigo.equals("Ingrese un Codigo...")) {
+            JOptionPane.showMessageDialog(null, "El campo de codigo esta vacio", "Alerta", JOptionPane.ERROR_MESSAGE);
+        } else if (exists) {
 
-            if (codigo.equals("") || codigo.equals("Ingrese un Codigo")) {
-                JOptionPane.showMessageDialog(null, "El campo de codigo esta vacio", "Alerta", JOptionPane.ERROR_MESSAGE);
+            if (txtField2Nombre.getText().equals("") || txtArea2Desc.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Campos vacios", "Atencion!", JOptionPane.ERROR_MESSAGE);
             } else {
                 int index = 0;
                 int departIndex = 0;
@@ -831,6 +843,7 @@ public class FrmArticulo extends javax.swing.JFrame {
                         store.remove(i);
                     }
                 }
+
                 departamento = comboBox2Depart.getItemAt(departIndex);
                 categoria = comboBox2Categ.getItemAt(categIndex);
                 Articulo articulo = new Articulo(codigo, nombre, descripcion, departamento, categoria);
@@ -846,6 +859,7 @@ public class FrmArticulo extends javax.swing.JFrame {
 
                 JOptionPane.showMessageDialog(this, "Los datos han sido modificados correctamente!", "Atencion!", JOptionPane.INFORMATION_MESSAGE);
                 InsertData();
+
             }
         } else if (exists == false) {
             JOptionPane.showMessageDialog(this, "El codigo ingresado no existe", "Atencion!", JOptionPane.ERROR_MESSAGE);
@@ -919,10 +933,10 @@ public class FrmArticulo extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jButton3ActionPerformed
-    private void counter(){
+    private void counter() {
         tCounter++;
         System.out.println("Ah " + tCounter);
-        if(tCounter >= 2){
+        if (tCounter >= 2) {
             tCounter = 0;
         }
         if (tCounter == 1) {
@@ -971,6 +985,22 @@ public class FrmArticulo extends javax.swing.JFrame {
 
         setTableData(departamento);
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+           int Opcion = JOptionPane.showConfirmDialog(this, "Desea salir? ", "Java Array Frames", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        FrmPrincipal.counter = 99;
+        if (Opcion == JOptionPane.OK_OPTION) {
+            FrmPrincipal frm = new FrmPrincipal();
+            frm.setVisible(true);
+            this.dispose();
+
+        }
+        tCounter = 0;
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments
